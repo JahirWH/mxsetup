@@ -208,6 +208,7 @@ fonts-crosextra-caladea
 fonts-crosextra-carlito
 fonts-dejavu
 fonts-droid-fallback
+fonts-firacode
 fonts-freefont-ttf
 fonts-liberation
 fonts-lyx
@@ -248,6 +249,7 @@ gnome-disk-utility
 gnome-icon-theme
 gnome-keyring
 gnome-mahjongg
+gnome-music
 gnome-software-plugin-flatpak
 gnupg
 gnupg2
@@ -374,6 +376,7 @@ libcups2
 libcups2-dev
 libcupsimage2
 libcupsimage2-dev
+libcurl4-openssl-dev
 libdb5.3
 libdebconfclient0
 libdevmapper1.02.1
