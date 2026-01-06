@@ -126,8 +126,11 @@ restaurar_pihole() {
     
     if [ -d "$CONFIG_PATH/configs/pihole" ]; then
         sudo cp -r configs/pihole/* /etc/pihole/ 2>/dev/null || true
-        sudo cp configs/pihole/resolved.conf /etc/systemd/resolved.conf 2>/dev/null || true
+        # sudo cp configs/pihole/resolved.conf /etc/systemd/resolved.conf 2>/dev/null || true
         echo "✅ Configuraciones de pihole restauradas"
+        # Eliminacion db de pihole para evitar conflictos
+
+    
     else
         echo "⚠️  Directorio de pihole no encontrado"
         echo "    Saltando restauración..."
@@ -180,7 +183,16 @@ exportar_shell() {
     cp ~/.bashrc configs/bash/.bashrc 2>/dev/null || true
     cp ~/.zshrc configs/zsh/.zshrc 2>/dev/null || true
     
-    echo "✅ Configuraciones de shell exportadas"
+    # Advertencia de seguridad
+    echo ""
+    echo "⚠️  ADVERTENCIA DE SEGURIDAD:"
+    echo "    Revisa los archivos exportados en configs/bash/ y configs/zsh/"
+    echo "    Pueden contener credenciales, API keys, o variables sensibles"
+    echo "    ❌ NO los subas a control de versión público sin revisar"
+    echo ""
+    
+    chmod 600 configs/bash/.bashrc configs/zsh/.zshrc 2>/dev/null || true
+    echo "✅ Configuraciones de shell exportadas (permisos: 600)"
 }
 
 # Función para exportar configuraciones de terminal
@@ -208,12 +220,27 @@ exportar_pihole() {
     
     mkdir -p configs/pihole
     
-    cp ~/etc/pihole/* configs/pihole/ 2>/dev/null || true
-    cp ~/etc/systemd/resolved.conf configs/pihole/ 2>/dev/null || true
-    cp ~/etc/NetworkManager/system-connections/* configs/pihole/ 2>/dev/null || true
-    cp ~/etc/NetworkManager/system-connections/* configs/pihole/ 2>/dev/null || true
-    
-    echo "✅ Configuraciones de pihole exportadas"
+    if [ -d "/etc/pihole" ]; then
+        # Copiar SOLO archivos de configuración, EXCLUYENDO bases de datos
+        sudo cp -r /etc/pihole/* configs/pihole/ 2>/dev/null || true
+        
+        # IMPORTANTE: Cambiar propietario para que sea accesible sin sudo
+        sudo chown -R $(whoami):$(whoami) configs/pihole/ 2>/dev/null || true
+        
+        # Establecer permisos seguros pero legibles
+        sudo chmod -R 600 configs/pihole/* 2>/dev/null || true
+        sudo chmod 700 configs/pihole/ 2>/dev/null || true
+        
+        # ELIMINAR archivos sensibles que contienen datos personales
+        rm -f configs/pihole/pihole-FTL.db 2>/dev/null || true
+        rm -f configs/pihole/gravity.db 2>/dev/null || true
+        rm -f configs/pihole/*.log 2>/dev/null || true
+        
+        echo "✅ Configuraciones de pihole exportadas (bases de datos excluidas)"
+    else
+        echo "⚠️  Directorio /etc/pihole no encontrado"
+        echo "    Saltando exportación..."
+    fi
 }
 
 # Función para exportar configuraciones de networks
@@ -224,11 +251,24 @@ exportar_networks() {
     
     mkdir -p configs/networks
     
-    cp /etc/NetworkManager/conf.d/* configs/networks/ 2>/dev/null || true
-    cp /etc/network/interfaces configs/networks/ 2>/dev/null || true
-    cp /etc/resolv.conf configs/networks/ 2>/dev/null || true
+    if [ -d "/etc/NetworkManager/conf.d" ]; then
+        sudo cp -r /etc/NetworkManager/conf.d/* configs/networks/ 2>/dev/null || true
+        sudo chown -R $(whoami):$(whoami) configs/networks/ 2>/dev/null || true
+        chmod 600 configs/networks/* 2>/dev/null || true
+    fi
+    
+    if [ -f "/etc/network/interfaces" ]; then
+        sudo cp /etc/network/interfaces configs/networks/ 2>/dev/null || true
+        sudo chown $(whoami):$(whoami) configs/networks/interfaces 2>/dev/null || true
+        chmod 600 configs/networks/interfaces 2>/dev/null || true
+    fi
+    
+    # NO EXPORTAR resolv.conf (información de DNS) ni system-connections (credenciales WiFi)
+    # resolv.conf es dinámico y suele cambiarse
+    # system-connections contiene contraseñas en texto plano
     
     echo "✅ Configuraciones de networks exportadas"
+    echo "   ℹ️  Nota: system-connections (WiFi/VPN) NO se exportan por seguridad"
 }
 
 # Función para exportar entorno Python
@@ -333,6 +373,12 @@ case "$opcion" in
         echo "🎉 ¡Exportación completada!"
         echo "========================="
         echo "📁 Revisa los archivos generados en el directorio actual"
+        echo ""
+        echo "⚠️  IMPORTANTE - Revisión de seguridad:"
+        echo "   1. Revisa configs/bash/.bashrc y configs/zsh/.zshrc"
+        echo "   2. Busca y ELIMINA: API keys, tokens, contraseñas"
+        echo "   3. NO subas a GitHub sin revisar"
+        echo "   4. Los archivos de credenciales WiFi NO se exportan por seguridad"
         ;;
         
     3)

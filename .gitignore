@@ -1,0 +1,95 @@
+# ===============================================
+# .gitignore - MXProfile Security Configuration
+# ===============================================
+
+# Archivos sensibles que NUNCA deben subirse a control de versión
+# Estas son configuraciones con información personal/privada
+
+# === CREDENCIALES Y DATOS SENSIBLES ===
+configs/bash/.bashrc
+configs/zsh/.zshrc
+*.key
+*.pem
+*.p12
+*.pfx
+.env
+.env.local
+.env.*.local
+
+# === PIHOLE - Bases de datos y datos personales ===
+configs/pihole/*.db
+configs/pihole/*.db-*
+configs/pihole/*.log
+configs/pihole/*.log.*
+configs/pihole/network-access.txt
+configs/pihole/adlists.list
+
+# === NETWORK - Credenciales WiFi y DNS ===
+configs/networks/system-connections/
+configs/networks/*.nmconnection
+configs/networks/resolv.conf
+configs/networks/resolved.conf
+
+# === PYTHON - Entornos virtuales ===
+*.venv
+.venv
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# === SHELLS - Historial sensible ===
+configs/bash/.bash_history
+configs/bash/.bash_sessions/
+configs/zsh/.zsh_history
+configs/zsh/.zsh_sessions/
+
+# === EDITORES Y TEMPORALES ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.directory
+Thumbs.db
+
+# === LOGS Y CACHES ===
+*.log
+.cache/
+.gradle/
+node_modules/
+
+# === ARCHIVOS GENERADOS ===
+# No incluir reportes de generados localmente
+packages/base.txt
+python/requirements.txt
+
+# === INFORMACIÓN SENSIBLE DE SISTEMA ===
+/etc/ copies/
+backup/
+snapshots/
+
+# === PERMISOS Y OWNERSHIP ===
+# Archivos potencialmente con problemas de permisos
+configs/pihole/.sudo*
+configs/networks/.sudo*
+
+# ===============================================
+# SEGURIDAD: Lo que SÍ es seguro exportar
+# ===============================================
+# ✅ configs/kitty/
+# ✅ configs/neofetch/
+# ✅ configs/btop/
+# ✅ configs/conky/
+# ✅ configs/zellij/
+# ✅ themes/
+# ✅ icons/
+# ✅ fonts/
+# ✅ packages/base.txt (solo nombres de paquetes)
+# ✅ python/requirements.txt (solo nombres de librerías)
