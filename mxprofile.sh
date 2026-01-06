@@ -17,10 +17,10 @@ mostrar_menu() {
     echo "¿Qué deseas hacer?"
     echo ""
     echo "  1) 📥 Instalar entorno completo"
-    echo "     (paquetes + configuración)"
+    echo "     (paquetes + configuración + pihole + networks)"
     echo ""
     echo "  2) 📤 Exportar configuración actual"
-    echo "     (paquetes + terminal + Python + fuentes + temas)"
+    echo "     (paquetes + terminal + Python + fuentes + temas + pihole + networks)"
     echo ""
     echo "  3) 🚪 Salir"
     echo ""
@@ -64,11 +64,26 @@ configurar_archivos_sistema() {
     echo "✅ Enlaces simbólicos creados"
 }
 
+# Función para restaurar configuraciones de shell
+restaurar_shell() {
+    echo ""
+    echo "🐚 Restaurando configuraciones de shell..."
+    echo "--------------------------------------"
+    
+    mkdir -p ~/.config/shell
+    cp configs/bash/.bashrc ~/ 2>/dev/null || true
+    cp configs/zsh/.zshrc ~/ 2>/dev/null || true
+    
+    echo "✅ Configuraciones de shell restauradas"
+}
+
 # Función para restaurar configuraciones de terminal
 restaurar_terminal() {
     echo ""
     echo "💻 Restaurando configuraciones de terminal..."
     echo "------------------------------------------"
+    
+    mkdir -p ~/.config/kitty ~/.config/zellij ~/.config/neofetch ~/.config/btop
     
     cp configs/kitty/kitty.conf ~/.config/kitty/ 2>/dev/null || true
     cp configs/zellij/config.kdl ~/.config/zellij/ 2>/dev/null || true
@@ -103,23 +118,69 @@ restaurar_temas() {
     fi
 }
 
+# Función para restaurar configuraciones de pihole
+restaurar_pihole() {
+    echo ""
+    echo "🔒 Restaurando configuraciones de pihole..."
+    echo "--------------------------------------"
+    
+    if [ -d "$CONFIG_PATH/configs/pihole" ]; then
+        sudo cp -r configs/pihole/* /etc/pihole/ 2>/dev/null || true
+        sudo cp configs/pihole/resolved.conf /etc/systemd/resolved.conf 2>/dev/null || true
+        echo "✅ Configuraciones de pihole restauradas"
+    else
+        echo "⚠️  Directorio de pihole no encontrado"
+        echo "    Saltando restauración..."
+    fi
+}
+
+# Función para restaurar configuraciones de networks
+restaurar_networks() {
+    echo ""
+    echo "🌐 Restaurando configuraciones de networks..."
+    echo "--------------------------------------"
+    
+    if [ -d "$CONFIG_PATH/configs/networks" ]; then
+        sudo cp -r configs/networks/* /etc/network/ 2>/dev/null || true
+        sudo cp configs/networks/resolv.conf /etc/resolv.conf 2>/dev/null || true
+        echo "✅ Configuraciones de networks restauradas"
+    else
+        echo "⚠️  Directorio de networks no encontrado"
+        echo "    Saltando restauración..."
+    fi
+}
+
 # Función para restaurar entorno Python
 restaurar_python() {
     echo ""
-    echo " Configurando entorno Python..."
+    echo "🐍 Restaurando entorno Python..."
     echo "-------------------------------"
     
     if [ -f "python/requirements.txt" ]; then
         echo " Creando entorno virtual en ~/.venv"
         python3 -m venv ~/.venv
-        source ~/.venv/bin/activate
-        pip install -r python/requirements.txt
-        deactivate
+        echo " Instalando dependencias..."
+        ~/.venv/bin/pip install -r python/requirements.txt
         echo "✅ Entorno Python configurado en ~/.venv"
+        echo "   💡 Actívalo con: source ~/.venv/bin/activate"
     else
         echo "⚠️  No se encontró python/requirements.txt"
         echo "    Saltando configuración de Python..."
     fi
+}
+
+# Función para exportar configuraciones de shell
+exportar_shell() {
+    echo ""
+    echo "🐚 Exportando configuraciones de shell..."
+    echo "--------------------------------------"
+    
+    mkdir -p configs/bash configs/zsh
+    
+    cp ~/.bashrc configs/bash/.bashrc 2>/dev/null || true
+    cp ~/.zshrc configs/zsh/.zshrc 2>/dev/null || true
+    
+    echo "✅ Configuraciones de shell exportadas"
 }
 
 # Función para exportar configuraciones de terminal
@@ -137,6 +198,37 @@ exportar_terminal() {
     cp ~/.config/btop/btop.conf configs/btop/ 2>/dev/null || true
     
     echo "✅ Configuraciones de terminal exportadas"
+}
+
+# Función para exportar configuraciones de pihole
+exportar_pihole() {
+    echo ""
+    echo "🔒 Exportando configuraciones de pihole..."
+    echo "--------------------------------------"
+    
+    mkdir -p configs/pihole
+    
+    cp ~/etc/pihole/* configs/pihole/ 2>/dev/null || true
+    cp ~/etc/systemd/resolved.conf configs/pihole/ 2>/dev/null || true
+    cp ~/etc/NetworkManager/system-connections/* configs/pihole/ 2>/dev/null || true
+    cp ~/etc/NetworkManager/system-connections/* configs/pihole/ 2>/dev/null || true
+    
+    echo "✅ Configuraciones de pihole exportadas"
+}
+
+# Función para exportar configuraciones de networks
+exportar_networks() {
+    echo ""
+    echo "🌐 Exportando configuraciones de networks..."
+    echo "--------------------------------------"
+    
+    mkdir -p configs/networks
+    
+    cp /etc/NetworkManager/conf.d/* configs/networks/ 2>/dev/null || true
+    cp /etc/network/interfaces configs/networks/ 2>/dev/null || true
+    cp /etc/resolv.conf configs/networks/ 2>/dev/null || true
+    
+    echo "✅ Configuraciones de networks exportadas"
 }
 
 # Función para exportar entorno Python
@@ -211,9 +303,12 @@ case "$opcion" in
         
         instalar_paquetes
         configurar_archivos_sistema
+        restaurar_shell
         restaurar_terminal
         restaurar_temas
         restaurar_python
+        restaurar_pihole
+        restaurar_networks
         
         echo ""
         echo "🎉 ¡Entorno instalado correctamente!"
@@ -226,10 +321,13 @@ case "$opcion" in
         echo "📋 Iniciando exportación de configuración..."
         echo "==========================================="
         
+        exportar_shell
         exportar_terminal
         exportar_python
         exportar_temas
         exportar_paquetes
+        exportar_pihole
+        exportar_networks
         
         echo ""
         echo "🎉 ¡Exportación completada!"

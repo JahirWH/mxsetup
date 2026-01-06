@@ -5,6 +5,7 @@ acpid
 acpi-fakekey
 adduser
 advert-block-antix
+age
 aircrack-ng
 alsa-tools
 alsa-topology-conf
@@ -16,11 +17,14 @@ antix-libs
 apt
 aptitude
 aptitude-common
+apt-listbugs
+apt-listchanges
 apt-notifier
 apt-transport-https
 apt-utils
 apt-xapian-index
 arc-theme
+arpwatch
 aspell
 aspell-en
 asunder
@@ -40,6 +44,7 @@ bash-config
 bc
 bind9-host
 binutils
+bison
 blackbird-gtk-theme
 bleachbit
 blueman
@@ -50,6 +55,7 @@ bluez-firmware
 bluez-obexd
 bluez-tools
 bootlogd
+brightnessctl
 brightness-modified-init
 broadcom-sta-dkms
 bsdutils
@@ -63,17 +69,23 @@ cabextract
 ca-certificates
 ca-certificates-java
 catfish
+cava
+cbonsai
 cdparanoia
 celluloid
 chafa
 checkaptgpg
+chkrootkit
 chrony
 chroot-rescue-mx
 cifs-utils
+clamav
+clamav-daemon
 cleanup-notifier-mx
 cli-installer-mx
 cli-shell-utils
 cmake
+cmus
 cockpit
 code
 colord
@@ -119,6 +131,7 @@ debian-archive-keyring
 debianutils
 deb-installer
 deborphan
+debsums
 default-jdk
 desktop-defaults-mx-applications
 desktop-defaults-mx-common
@@ -164,8 +177,10 @@ ethtool
 exfatprogs
 exo-utils
 extlinux
+extrepo
 extundelete
 f2fs-tools
+fail2ban
 fakeroot
 fastfetch
 fbcat
@@ -202,6 +217,7 @@ fish
 flac
 flake
 flatpak
+flex
 foliate
 fontconfig
 fonts-crosextra-caladea
@@ -223,6 +239,7 @@ fprintd
 ftp
 fuse3
 fzf
+g++
 galculator
 gcc
 gcc-12-base
@@ -260,10 +277,12 @@ gparted
 gpgv
 grep
 groff
+grub2-common
 grub-efi-amd64-bin
 grub-efi-ia32-bin
 grub-files-mx
 grub-pc
+grub-pc-bin
 grub-themes-mx
 gsettings-desktop-schemas
 gsfonts
@@ -292,8 +311,6 @@ heif-thumbnailer
 hexedit
 hicolor-icon-theme
 hostname
-hplip
-hplip-gui
 htop
 hunspell-en-gb
 hunspell-en-us
@@ -427,6 +444,7 @@ libmnl0
 libmount1
 libmpv-dev
 libmtp-runtime
+libncurses-dev
 libncursesw6
 libnettle8
 libnewt0.52
@@ -462,6 +480,7 @@ libreoffice-report-builder-bin
 libreoffice-sdbc-hsqldb
 libreoffice-style-sifr
 libreoffice-writer
+librewolf
 libsane
 libsane-dev
 libseccomp2
@@ -528,6 +547,7 @@ luckybackup
 luckybackup-data
 lvm2
 lxmenu-data
+lynis
 magnus
 mailcap
 make
@@ -559,6 +579,7 @@ mokutil
 mosh
 most
 mount
+mozillavpn
 mpg123
 mpv
 mtools
@@ -654,6 +675,7 @@ ncdu
 ncurses-base
 ncurses-bin
 ncurses-term
+needrestart
 neofetch
 netbase
 netcat-traditional
@@ -676,7 +698,6 @@ nmap
 nodejs
 nomacs
 nomacs-l10n
-npm
 ntfs-3g
 nvidia-detect
 nwipe
@@ -708,8 +729,10 @@ pdfarranger
 peg-e
 perl-base
 phonon-backend-gstreamer-common
+picom
+pihole-meta
 pinentry-gtk2
-pipewire-setup-mx
+pipes-sh
 pipx
 pkg-config
 plocate
@@ -749,8 +772,11 @@ printer-driver-sag-gdi
 printer-driver-splix
 procps
 projectm-data
+proton-vpn-gnome-desktop
+protonvpn-stable-release
 psmisc
 psutils
+pulseaudio
 pulseaudio-utils
 pv
 python3
@@ -762,6 +788,7 @@ python3-pip
 python3-pyqt5
 python3-smbc
 python3-tk
+python3-wxgtk4.0
 qpdfview
 qpdfview-djvu-plugin
 qpdfview-ps-plugin
@@ -779,6 +806,7 @@ readline-common
 redshift
 redshift-gtk
 rfkill
+rkhunter
 rpcbind
 rpl
 rsync
@@ -786,7 +814,6 @@ rsyslog
 rsyslogd-sysvinit-compat
 rtl8812au-dkms
 rtl8821cu-dkms
-safeeyes
 samba
 sane-utils
 scowl
@@ -799,6 +826,7 @@ sensible-utils
 sgml-data
 shared-mime-info
 simple-scan
+slick-greeter
 smartmontools
 smbclient
 snapd
@@ -827,6 +855,7 @@ syslinux-utils
 system-config-printer
 system-config-printer-udev
 systemd
+systemd-resolved
 systemd-shim
 system-keyboard-qt
 system-tools-backends
@@ -837,6 +866,7 @@ tango-icon-theme
 tar
 tcl
 tcpd
+tcpdump
 tdb-tools
 telnet
 testdisk
@@ -858,6 +888,7 @@ transmission-common
 transmission-qt
 tree
 ttf-bitstream-vera
+tty-clock
 tumbler
 tumbler-common
 tumbler-plugins-extra
@@ -867,6 +898,7 @@ udev
 udevil
 udev-modified-init
 udisks2
+ufw
 uidmap
 unpaper
 unrar
@@ -883,6 +915,7 @@ util-linux
 util-linux-extra
 va-driver-all
 vainfo
+valac-bin
 vbetool
 vcdimager
 vdpau-driver-all
@@ -900,9 +933,9 @@ vpnc
 vrms
 w3m
 wamerican
-warp-terminal
 wavpack
 webp
+wget
 whiptail
 whois
 wifite
